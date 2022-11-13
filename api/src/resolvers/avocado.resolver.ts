@@ -4,7 +4,7 @@ import type { PrismaClient, Avocado, Attributes } from '@prisma/client'
 type ResolverParent = unknown
 type ResolverContext = { orm: PrismaClient }
 
-export function findAll(
+export async function findAll(
   parent: ResolverParent,
   args: undefined,
   context: ResolverContext
@@ -12,13 +12,13 @@ export function findAll(
   return context.orm.avocado.findMany({ include: { attributes: true } })
 }
 
-export function findOne(
+export async function findOne(
   parent: ResolverParent,
-  args: { id: number },
+  args: { id: string },
   context: ResolverContext
 ): Promise<Avocado | null> {
   return context.orm.avocado.findUnique({
-    where: args,
+    where: { id: parseInt(args.id, 10) },
     include: {
       attributes: true
     }
